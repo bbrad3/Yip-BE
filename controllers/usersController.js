@@ -48,7 +48,7 @@ usersController.login = async(req, res) => {
             }
         })
 
-        const encryptedId = jwt.sign({userId: newUser.id}, process.env.JWT_SECRET)
+        const encryptedId = jwt.sign({userId: foundUser.id}, process.env.JWT_SECRET)
 
         if (foundUser.password === req.body.password) {
             res.json({
@@ -68,6 +68,25 @@ usersController.login = async(req, res) => {
         res.json({
             status: 404,
             message: 'login not work!!',
+            error
+        })
+    }
+}
+
+usersController.findOne = async (req, res) => {
+    try {
+        const msg = await req.headers.authorization
+        const foundUser = await decryptId(msg)
+        
+        res.json({
+            status: 200,
+            message: 'Here is your user',
+            user: foundUser
+        })
+    } catch (error) {
+        res.json({
+            status: 404,
+            message: 'User not found',
             error
         })
     }
@@ -128,5 +147,16 @@ usersController.delete = async(req, res) => {
     }
 }
 
+async function decryptId(encryptedId) {
+    console.log('ENCRYPTED USERID MIDDLEWARE WORKED!', encryptedId)
+
+    const decryptedId = await jwt.verify(encryptedId, process.env.JWT_SECRET)
+
+    const foundUser = await user.findOne({
+        where: { id: decryptedId.userId }
+    })
+
+    return foundUser
+}
 
 module.exports = usersController
