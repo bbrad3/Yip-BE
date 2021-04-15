@@ -1,4 +1,3 @@
-const { async } = require('regenerator-runtime')
 const models = require('../models')
 const { user, company, review } = models
 const companiesController = {}
