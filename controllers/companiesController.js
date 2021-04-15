@@ -26,11 +26,9 @@ companiesController.getOne = async(req, res) => {
 
     try {
         const oneCompany = await company.findOne({
-
             where: {
                 id: req.headers.id
             }
-
         })
         res.json({
             status: 200,
@@ -50,30 +48,28 @@ companiesController.getOne = async(req, res) => {
 }
 
 companiesController.new = async(req, res) => {
-
     try {
         const newCompany = await company.findOrCreate({
             where: {
-                // need to find by user id or log in and you can create//
                 name: req.body.name,
-
             },
             defaults: {
-
                 type: req.body.type,
                 description: req.body.description,
                 address: req.body.address,
                 image: req.body.image
-
             }
-
         })
-        res.json({
 
+        const foundUser = decryptId(req.headers.authorization)
+
+        const association = await newCompany.addUser(foundUser)
+
+        res.json({
             status: 200,
             newCompany,
-            message: 'Company Created'
-
+            message: 'Company Created',
+            associated: association
         })
     } catch (error) {
         res.json({
@@ -87,20 +83,19 @@ companiesController.new = async(req, res) => {
 companiesController.update = async(req, res) => {
 
     try {
-        const newUpdate = req.body
+        const updates = req.body
 
-        const newCompany = await company.findOne({
+        const foundCompany = await company.findOne({
             where: {
                 id: req.headers.id
             }
         })
-        let result = await newCompany.update(newUpdate)
+        let result = await foundCompany.update(updates)
         res.json({
+            company: foundCompany,
             result,
             status: 200,
             message: 'company has been updated'
-
-
         })
     } catch (error) {
         res.json({
@@ -139,7 +134,17 @@ companiesController.delete = async(req, res) => {
 }
 
 
+async function decryptId(encryptedId) {
+    console.log('ENCRYPTED USERID MIDDLEWARE WORKED!', encryptedId)
 
+    const decryptedId = await jwt.verify(encryptedId, process.env.JWT_SECRET)
+
+    const foundUser = await user.findOne({
+        where: { id: decryptedId.userId }
+    })
+
+    return foundUser
+}
 
 
 module.exports = companiesController;
