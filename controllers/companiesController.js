@@ -84,11 +84,13 @@ companiesController.new = async(req, res) => {
 companiesController.update = async(req, res) => {
 
     try {
+        console.log(req.headers);
+        console.log(req.body);
         const updates = req.body
 
         const foundCompany = await company.findOne({
             where: {
-                id: req.headers.id
+                id: req.body.id
             }
         })
         let result = await foundCompany.update(updates)
@@ -109,14 +111,16 @@ companiesController.update = async(req, res) => {
 
 }
 
-companiesController.delete = async(req, res) => {
+companiesController.delete = async (req, res) => {
 
     try {
+        console.log(req.body, 'body');
         const findCompany = await company.findOne({
             where: {
-                id: req.headers.id
+                id: req.params.id
             }
         })
+        console.log('findCompany', findCompany);
         const response = findCompany.destroy()
 
         res.json({
@@ -133,7 +137,6 @@ companiesController.delete = async(req, res) => {
         })
     }
 }
-
 
 async function decryptId(encryptedId) {
     console.log('ENCRYPTED USERID MIDDLEWARE WORKED!', encryptedId)
