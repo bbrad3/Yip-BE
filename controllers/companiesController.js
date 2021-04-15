@@ -7,10 +7,10 @@ const companiesController = {}
 companiesController.getAll = async(req, res) => {
 
     try {
-        const allCompanies = company.findAll()
+        const allCompanies = await company.findAll()
         res.json({
             status: 200,
-            allCompanies,
+            companies: allCompanies,
             message: "Here is your companies"
         })
     } catch (error) {
@@ -25,7 +25,7 @@ companiesController.getAll = async(req, res) => {
 companiesController.getOne = async(req, res) => {
 
     try {
-        const oneCompany = company.getOne({
+        const oneCompany = await company.findOne({
 
             where: {
                 id: req.headers.id
@@ -54,15 +54,17 @@ companiesController.new = async(req, res) => {
     try {
         const newCompany = await company.findOrCreate({
             where: {
-
+                // need to find by user id or log in and you can create//
                 name: req.body.name,
-                address: req.body.address
+
             },
             defaults: {
 
                 type: req.body.type,
                 description: req.body.description,
+                address: req.body.address,
                 image: req.body.image
+
             }
 
         })
