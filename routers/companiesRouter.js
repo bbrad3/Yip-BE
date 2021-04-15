@@ -5,7 +5,7 @@ const companiesRouter = express.Router()
 
 companiesRouter.get('/all', companiesController.getAll)
 
-companiesRouter.get('/one', companiesController.getOne)
+companiesRouter.get('/:name', companiesController.getOne)
 
 companiesRouter.post('/new', companiesController.new)
 
