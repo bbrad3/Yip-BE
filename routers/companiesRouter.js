@@ -11,7 +11,7 @@ companiesRouter.post('/new', companiesController.new)
 
 companiesRouter.put('/update', companiesController.update)
 
-companiesRouter.delete('/delete', companiesController.delete)
+companiesRouter.delete('/delete/:id', companiesController.delete)
 
 
 
