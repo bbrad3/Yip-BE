@@ -1,18 +1,7 @@
 const models = require('../models')
 const { user, company, review } = models
-<<<<<<< HEAD
-<<<<<<< HEAD
-const jwt = require('jsonwebtokenhow to ')
-=======
-const jwt = require('jsonwebtoken')
->>>>>>> 9efc2459cef39ddca8c599451974f1ce20c89a9c
-=======
-
-
 
 const jwt = require('jsonwebtoken')
-
->>>>>>> 224da5fb34880f5773b0dbc17d121bb4668f4d54
 
 const usersController = {}
 
