@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 const cors = require('cors')
+const routesReport = require('rowdy-logger').begin(app)
 require('dotenv').config()
 
 // MIDDLEWARE
