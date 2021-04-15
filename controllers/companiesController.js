@@ -114,13 +114,15 @@ companiesController.update = async(req, res) => {
 companiesController.delete = async(req, res) => {
 
     try {
-        const findCompany = await company.destroy({
+        const findCompany = await company.findOne({
             where: {
                 id: req.headers.id
             }
         })
+        const response = findCompany.destroy()
+
         res.json({
-            findCompany,
+            response,
             status: 200,
             message: 'company has been deleted'
 
