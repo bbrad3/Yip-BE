@@ -1,5 +1,6 @@
 const models = require('../models')
 const { user, company, review } = models
+const jwt = require('jsonwebtokenhow to ')
 
 const usersController = {}
 
