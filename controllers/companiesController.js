@@ -25,9 +25,10 @@ companiesController.getAll = async(req, res) => {
 companiesController.getOne = async(req, res) => {
 
     try {
+        console.log(req.body)
         const oneCompany = await company.findOne({
             where: {
-                id: req.headers.id
+                name: req.params.name 
             }
         })
         res.json({
