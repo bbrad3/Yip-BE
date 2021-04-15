@@ -2,8 +2,8 @@ const express = require('express')
 const app = express()
 const cors = require('cors')
 require('dotenv').config()
-
-// MIDDLEWARE
+const routesReport = require('rowdy-logger').begin(app)
+    // MIDDLEWARE
 app.use(cors())
 app.use(express.json())
 
@@ -18,8 +18,8 @@ app.use('/users', usersRouter)
 const companiesRouter = require('./routers/companiesRouter')
 app.use('/companies', companiesRouter)
 
-const reviewsRouter = require('./routers/reviewsRouter')
-app.use('/reviews', reviewsRouter)
+// const reviewsRouter = require('./routers/reviewsRouter')
+// app.use('/reviews', reviewsRouter)
 
 // SERVER
 const PORT = process.env.PORT || 3001
