@@ -1,5 +1,6 @@
 const models = require('../models')
 const { user, company, review } = models
+const jwt = require('jsonwebtoken')
 
 const usersController = {}
 
@@ -15,10 +16,16 @@ usersController.new = async(req, res) => {
             }
         })
 
+        const encryptedId = jwt.sign({userId: newUser.id}, process.env.JWT_SECRET)
+
         res.json({
             status: 200,
             message: 'New user created',
-            user: newUser
+            user: {
+                name: newUser.name,
+                email: newUser.email
+            },
+            userId: encryptedId
         })
     } catch (error) {
         res.json({
@@ -36,8 +43,19 @@ usersController.login = async(req, res) => {
                 email: req.body.email
             }
         })
+
+        const encryptedId = jwt.sign({userId: newUser.id}, process.env.JWT_SECRET)
+
         if (foundUser.password === req.body.password) {
-            res.json({ user: foundUser, message: 'login works!' })
+            res.json({
+                status: 200,
+                user: {
+                    name: foundUser.name,
+                    email: foundUser.email
+                },
+                userId: encryptedId,
+                message: 'login works!'
+            })
 
         } else {
             res.status(401).json({ error: 'wrong password' })
@@ -65,7 +83,10 @@ usersController.update = async(req, res) => {
 
         let updates = await foundUser.update(req.body)
         res.json({
-            user: foundUser,
+            user: {
+                name: foundUser.name,
+                email: foundUser.email
+            },
             message: 'update fuction working !',
             status: 200,
             updates
@@ -87,11 +108,11 @@ usersController.delete = async(req, res) => {
                 id: req.headers.userid
             }
         })
-        let destroyFunction = await deleteUser.destroy()
+        let userDestroyed = await deleteUser.destroy()
         res.json({
             status: 200,
-            message: 'delete function works!',
-            user: destroyFunction
+            message: 'Delete function works!',
+            userDestroyed
 
         })
     } catch (error) {
