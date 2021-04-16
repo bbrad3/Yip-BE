@@ -91,17 +91,20 @@ usersController.findOne = async (req, res) => {
 
 usersController.update = async(req, res) => {
 
-    console.log(req.headers);
+    // console.log(req.headers);
     try {
-
-        const foundUser = await user.findOne({
-            where: {
-                id: req.headers.userid
-            }
-        })
-
-
-        let updates = await foundUser.update(req.body)
+        const obj = {}
+        if(req.body.name !== '') {
+            obj.name = req.body.name
+        }
+        if(req.body.email !== '') {
+            obj.email = req.body.email
+        }
+        if(req.body.password !== '') {
+            obj.password = req.body.password
+        }
+        const foundUser = await decryptId(req.params.id)
+        let updates = await foundUser.update(obj)
         res.json({
             user: {
                 name: foundUser.name,
@@ -123,12 +126,9 @@ usersController.update = async(req, res) => {
 
 usersController.delete = async(req, res) => {
     try {
-        const deleteUser = await user.findOne({
-            where: {
-                id: req.headers.userid
-            }
-        })
-        let userDestroyed = await deleteUser.destroy()
+        const foundUser = await decryptId(req.params.id)
+
+        let userDestroyed = await foundUser.destroy()
         res.json({
             status: 200,
             message: 'Delete function works!',
