@@ -61,6 +61,8 @@ companiesController.getOne = async(req, res) => {
 
 companiesController.new = async(req, res) => {
     try {
+        const foundUser = await decryptId(req.params.userId)
+        console.log('foundUser!!!!', foundUser)
         const newCompany = await company.findOrCreate({
             where: {
                 name: req.body.name,
@@ -69,19 +71,19 @@ companiesController.new = async(req, res) => {
                 type: req.body.type,
                 description: req.body.description,
                 address: req.body.address,
-                image: req.body.image
+                image: req.body.image,
+                userId: foundUser.id
             }
         })
 
-        const foundUser = decryptId(req.params.userId)
 
-        const association = await newCompany.addUser(foundUser)
+        // const association = await newCompany.addUser(foundUser)
 
         res.json({
             status: 200,
             newCompany,
-            message: 'Company Created',
-            associated: association
+            message: 'Company Created'
+            // associated: association
         })
     } catch (error) {
         res.json({
