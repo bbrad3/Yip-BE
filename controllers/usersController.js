@@ -2,9 +2,7 @@ const models = require('../models')
 const { user, company, review } = models
 
 
-
 const jwt = require('jsonwebtoken')
-
 
 const usersController = {}
 
@@ -96,9 +94,14 @@ usersController.update = async(req, res) => {
 
     console.log(req.headers);
     try {
-        const foundUser = await decryptId(req.params.id)
 
-        console.log(foundUser)
+        const foundUser = await user.findOne({
+            where: {
+                id: req.headers.userid
+            }
+        })
+
+
         let updates = await foundUser.update(req.body)
         res.json({
             user: {
@@ -121,8 +124,12 @@ usersController.update = async(req, res) => {
 
 usersController.delete = async(req, res) => {
     try {
-        const foundUser = await decryptId(req.params.id)
-        let userDestroyed = await foundUser.destroy()
+        const deleteUser = await user.findOne({
+            where: {
+                id: req.headers.userid
+            }
+        })
+        let userDestroyed = await deleteUser.destroy()
         res.json({
             status: 200,
             message: 'Delete function works!',
