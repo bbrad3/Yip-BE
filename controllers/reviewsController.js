@@ -3,20 +3,20 @@ const { user, company, review } = models
 
 const reviewsController = {}
 const { Op } = require('sequelize')
-
+const jwt = require('jsonwebtoken')
 reviewsController.create = async(req, res) => {
 
     try {
         const reviewContent = req.body
+        console.log(reviewContent)
 
+        const businessUser = await decryptId(req.params.userId)
+        // const businessUser = await user.findOne({
 
-        // const businessUser = await decryptId(req.params.userId)
-        const businessUser = await user.findOne({
-
-            where: {
-                id: req.params.userId
-            }
-        })
+        //     where: {
+        //         id: req.params.userId
+        //     }
+        // })
         const companyId = await company.findOne({
             where: {
                 id: req.params.companyId
@@ -40,7 +40,8 @@ reviewsController.create = async(req, res) => {
     } catch (error) {
         console.log(error);
         res.json({
-            error
+            error,
+            message:"review create is not working !"
         })
     }
 
