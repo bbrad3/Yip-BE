@@ -28,12 +28,22 @@ companiesController.getOne = async(req, res) => {
         console.log(req.body)
         const oneCompany = await company.findOne({
             where: {
-                name: req.params.name 
+                name: req.params.name
+
             }
+
         })
+        const foundReview = await review.findAll({
+            where: {
+                companyId: oneCompany.id
+            }
+
+        })
+
         res.json({
             status: 200,
             oneCompany,
+            foundReview,
             message: 'This is the company you are looking for'
 
         })
@@ -111,7 +121,7 @@ companiesController.update = async(req, res) => {
 
 }
 
-companiesController.delete = async (req, res) => {
+companiesController.delete = async(req, res) => {
 
     try {
         console.log(req.body, 'body');

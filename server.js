@@ -19,8 +19,8 @@ app.use('/users', usersRouter)
 const companiesRouter = require('./routers/companiesRouter')
 app.use('/companies', companiesRouter)
 
-// const reviewsRouter = require('./routers/reviewsRouter')
-// app.use('/reviews', reviewsRouter)
+const reviewsRouter = require('./routers/reviewsRouter')
+app.use('/reviews', reviewsRouter)
 
 // SERVER
 const PORT = process.env.PORT || 3001
