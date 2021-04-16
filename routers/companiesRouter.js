@@ -7,7 +7,7 @@ companiesRouter.get('/all', companiesController.getAll)
 
 companiesRouter.get('/:name', companiesController.getOne)
 
-companiesRouter.post('/new', companiesController.new)
+companiesRouter.post('/new/:userId', companiesController.new)
 
 companiesRouter.put('/update', companiesController.update)
 

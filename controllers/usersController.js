@@ -18,7 +18,7 @@ usersController.new = async(req, res) => {
             }
         })
 
-        const encryptedId = jwt.sign({userId: newUser.id}, process.env.JWT_SECRET)
+        const encryptedId = jwt.sign({ userId: newUser.id }, process.env.JWT_SECRET)
 
         res.json({
             status: 200,
@@ -46,7 +46,8 @@ usersController.login = async(req, res) => {
             }
         })
 
-        const encryptedId = jwt.sign({userId: foundUser.id}, process.env.JWT_SECRET)
+        const encryptedId = await jwt.sign({ userId: foundUser.id }, process.env.JWT_SECRET)
+        console.log(foundUser, encryptedId);
 
         if (foundUser.password === req.body.password) {
             res.json({
@@ -60,8 +61,11 @@ usersController.login = async(req, res) => {
             })
 
         } else {
+
+
             res.status(401).json({ error: 'wrong password' })
         }
+
     } catch (error) {
         res.json({
             status: 404,
@@ -71,11 +75,11 @@ usersController.login = async(req, res) => {
     }
 }
 
-usersController.findOne = async (req, res) => {
+usersController.findOne = async(req, res) => {
     try {
         const msg = await req.headers.authorization
         const foundUser = await decryptId(msg)
-        
+
         res.json({
             status: 200,
             message: 'Here is your user',
@@ -95,13 +99,13 @@ usersController.update = async(req, res) => {
     // console.log(req.headers);
     try {
         const obj = {}
-        if(req.body.name !== '') {
+        if (req.body.name !== '') {
             obj.name = req.body.name
         }
-        if(req.body.email !== '') {
+        if (req.body.email !== '') {
             obj.email = req.body.email
         }
-        if(req.body.password !== '') {
+        if (req.body.password !== '') {
             obj.password = req.body.password
         }
         const foundUser = await decryptId(req.params.id)

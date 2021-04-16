@@ -1,5 +1,6 @@
 const models = require('../models')
 const { user, company, review } = models
+const jwt = require('jsonwebtoken')
 const companiesController = {}
 
 
@@ -72,7 +73,7 @@ companiesController.new = async(req, res) => {
             }
         })
 
-        const foundUser = decryptId(req.headers.authorization)
+        const foundUser = decryptId(req.params.userId)
 
         const association = await newCompany.addUser(foundUser)
 
