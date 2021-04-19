@@ -53,7 +53,6 @@ companiesController.getOne = async(req, res) => {
             error,
             status: 404,
             message: 'Can not find this one company'
-
         })
     }
 
@@ -83,7 +82,7 @@ companiesController.new = async(req, res) => {
             status: 200,
             newCompany,
             message: 'Company Created'
-            // associated: association
+                // associated: association
         })
     } catch (error) {
         res.json({
